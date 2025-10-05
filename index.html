@@ -19,8 +19,10 @@
               <div class="h-full w-full flex flex-col justify-center items-center p-4">
                 
                 <div class="text-center select-none">
-                  <!-- LOGO: Replaced H1 with IMG tag -->
-                  <img id="logo-image" src="./assets/logo.png" alt="Pointless Coin Logo" class="h-28 md:h-44 animate-pulse" style="animation-duration: 4s; filter: drop-shadow(0 0 15px rgba(255,255,255,0.3)) drop-shadow(0 0 35px rgba(255,255,255,0.2));" />
+                  <!-- LOGO: Wrapper to handle wide banner image and center it -->
+                  <div class="inline-block h-28 w-28 md:h-44 md:w-44 overflow-hidden relative align-middle pointer-events-none">
+                    <img id="logo-image" src="" alt="Pointless Coin Logo" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[400%] w-auto max-w-none animate-pulse" style="animation-duration: 4s; filter: drop-shadow(0 0 15px rgba(255,255,255,0.3)) drop-shadow(0 0 35px rgba(255,255,255,0.2));" />
+                  </div>
                 </div>
                 
                 <div class="text-center mt-8 md:mt-12 px-4 select-none">
@@ -32,8 +34,8 @@
                     There is no roadmap. There is no utility. There is only •&lt;
                   </p>
                   
-                  <div class="relative mt-10 font-mono text-sm md:text-base bg-black/30 border border-gray-700 rounded-lg p-3 flex items-center justify-between max-w-lg w-full mx-auto backdrop-blur-sm">
-                    <span id="contract-address-text" class="text-gray-300 pr-4 truncate" aria-label="Contract Address">0x8fdbf33543799c2e4ccb6abd66a448365beae137</span>
+                  <div class="relative mt-10 font-mono text-sm md:text-base bg-black/30 border border-gray-700 rounded-lg p-3 inline-flex items-center justify-between backdrop-blur-sm">
+                    <span id="contract-address-text" class="text-gray-300 pr-4" aria-label="Contract Address">0xeBaC318D33b48948FbDEECd6139D86c1A3c6D69a</span>
                     <button id="copy-button" class="transition-all duration-300 flex-shrink-0 flex items-center gap-2 text-gray-400 hover:text-white" aria-label="Copy address">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
@@ -70,14 +72,14 @@
           const CONFIG = {
             // Main Content
             COIN_NAME: 'Pointless Coin',
-            TAGLINE: 'Embrace the void. In a universe of purpose, we offer a sanctuary of meaninglessness. There is no roadmap. There is no utility. There is only •<',
-            CONTRACT_ADDRESS: '0x8fdbf33543799c2e4ccb6abd66a448365beae137',
+            TAGLINE: 'Embrace the void. In a universe of purpose, we offer a sanctuary of meaninglessness. There is no roadmap. There is no utility. There is only <span class="inline-block w-1.5 h-1.5 bg-white rounded-full align-middle mx-1 shadow-[0_0_6px_rgba(255,255,255,0.7)]"></span>&lt;',
+            CONTRACT_ADDRESS: '0xeBaC318D33b48948FbDEECd6139D86c1A3c6D69a',
             
             // Assets
             // If your logo isn't showing, check this path. 
             // It should be relative to this index.html file.
             // Example: './logo.png' or './images/logo.png'
-            LOGO_PATH: './assets/logo.png',
+            LOGO_PATH: 'https://pbs.twimg.com/profile_banners/1924154122564960258/1755723500/1500x500',
 
             // Links
             BUY_NOW_LINK: 'https://dexscreener.com/avalanche/0x8fdbf33543799c2e4ccb6abd66a448365beae137',
@@ -92,7 +94,7 @@
             document.getElementById('logo-image').src = CONFIG.LOGO_PATH;
             document.getElementById('logo-image').alt = `${CONFIG.COIN_NAME} Logo`;
             document.getElementById('coin-name').innerText = CONFIG.COIN_NAME;
-            document.getElementById('tagline').innerText = CONFIG.TAGLINE;
+            document.getElementById('tagline').innerHTML = CONFIG.TAGLINE;
             document.getElementById('contract-address-text').innerText = CONFIG.CONTRACT_ADDRESS;
             document.getElementById('buy-now-link').href = CONFIG.BUY_NOW_LINK;
             document.getElementById('x-link').href = CONFIG.X_LINK;
