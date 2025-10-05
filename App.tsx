@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Logo from './components/Logo';
 import InfoPanel from './components/InfoPanel';
+import Stars from './components/Stars';
 
 // =================================================================
 // Main Application Component
@@ -37,6 +38,7 @@ const App: React.FC = () => {
   // --- RENDER ---
   return (
     <div className="h-screen w-screen bg-black text-white antialiased overflow-hidden cursor-none relative">
+      <Stars />
       {/* This div applies the spotlight mask to all its children */}
       <div
         className="absolute inset-0"
