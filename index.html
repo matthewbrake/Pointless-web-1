@@ -124,21 +124,74 @@
             starContainer.appendChild(starFragment);
           }
 
-          // --- MOUSE EFFECTS ---
+          // --- MOUSE & TOUCH EFFECTS ---
+          const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+          const rootEl = document.querySelector('.cursor-none');
           const spotlight = document.getElementById('spotlight');
           const cursorHalo = document.getElementById('cursor-halo');
-          
-          window.addEventListener('mousemove', (event) => {
-            if (!spotlight || !cursorHalo) return;
-            const { clientX, clientY } = event;
-            
-            const maskValue = `radial-gradient(circle 250px at ${clientX}px ${clientY}px, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 80%)`;
-            spotlight.style.webkitMaskImage = maskValue;
-            spotlight.style.maskImage = maskValue;
 
-            cursorHalo.style.left = `${clientX}px`;
-            cursorHalo.style.top = `${clientY}px`;
-          });
+          if (isTouchDevice) {
+            if (rootEl) rootEl.classList.remove('cursor-none');
+            if (cursorHalo) cursorHalo.style.display = 'none';
+          }
+          
+          if (spotlight) {
+            const updatePosition = (x, y) => {
+              requestAnimationFrame(() => {
+                const maskValue = `radial-gradient(circle 250px at ${x}px ${y}px, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 80%)`;
+                spotlight.style.webkitMaskImage = maskValue;
+                spotlight.style.maskImage = maskValue;
+                
+                if (!isTouchDevice && cursorHalo) {
+                  cursorHalo.style.left = `${x}px`;
+                  cursorHalo.style.top = `${y}px`;
+                }
+              });
+            };
+            
+            const centerAndTransition = () => {
+              spotlight.style.transition = 'all 0.5s ease-out';
+              if (!isTouchDevice && cursorHalo) {
+                cursorHalo.style.transition = 'all 0.5s ease-out';
+              }
+              updatePosition(window.innerWidth / 2, window.innerHeight / 2);
+            };
+
+            const removeTransition = () => {
+              spotlight.style.transition = 'none';
+              if (!isTouchDevice && cursorHalo) {
+                cursorHalo.style.transition = 'none';
+              }
+            };
+
+            // Mousemove for desktop
+            window.addEventListener('mousemove', (e) => {
+              if (isTouchDevice) return;
+              removeTransition();
+              updatePosition(e.clientX, e.clientY);
+            });
+
+            // Touchstart and Touchmove for mobile
+            const handleTouch = (e) => {
+              removeTransition();
+              const touch = e.touches[0];
+              updatePosition(touch.clientX, touch.clientY);
+            };
+            window.addEventListener('touchstart', handleTouch, { passive: true });
+            window.addEventListener('touchmove', handleTouch, { passive: true });
+
+            // Touchend for mobile & mouseleave for desktop
+            window.addEventListener('touchend', centerAndTransition);
+            document.body.addEventListener('mouseleave', () => {
+              if (!isTouchDevice) {
+                  centerAndTransition();
+              }
+            });
+
+            // Initial state & resize handling
+            updatePosition(window.innerWidth / 2, window.innerHeight / 2);
+            window.addEventListener('resize', centerAndTransition);
+          }
           
           // --- COPY BUTTON ---
           const copyButton = document.getElementById('copy-button');
